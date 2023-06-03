@@ -30,67 +30,8 @@ stemmer = PorterStemmer()
 stop_words = stopwords.words('english')
 tfidf = TfidfVectorizer()
 
-# Function to perform publication search
-# def pub_qp_data(query):
-#     abc = {}
-#     query = query.lower().split()
-#     pointer = []
-#     # if len(query) < 2:
-#     #         return "Please enter at least 2 words .. "
-#     for token in query:
-#         if len(token) <= 3:
-#             return "Error!!!", "Please enter more than 4 characters."
-#         stem_temp = ""
-#         stem_word_file = []
-#         temp_file = []
-#         word_list = word_tokenize(token)
-#         for x in word_list:
-#             if x not in stop_words:
-#                 stem_temp += stemmer.stem(x) + " "
-#         stem_word_file.append(stem_temp)
-#         if pub_index.get(stem_word_file[0].strip()):
-#             pointer = pub_index.get(stem_word_file[0].strip())
-#             # print("pointer", pointer)
-#         else:
-#             if len(query) == 1:
-#                 pointer = []
-
-#         if len(pointer) == 0:
-#             abc = {}
-#         else:
-#             for j in pointer:
-#                 temp_file.append(pub_list_first_stem[j])
-#             temp_file = tfidf.fit_transform(temp_file)
-#             cosine_output = cosine_similarity(
-#                 temp_file, tfidf.transform(stem_word_file))
-
-#             if pub_index.get(stem_word_file[0].strip()):
-#                 for j in pointer:
-#                     abc[j] = cosine_output[pointer.index(j)]
-
-#     aa = 0
-#     rank_sorting = sorted(abc.items(), key=lambda z: z[1], reverse=True)
-#     print("rank_sorting", rank_sorting)
-#     # for a in rank_sorting:
-
-#     #     outputData.insert(tk.INSERT, "Rank: ")
-#     #     outputData.insert(tk.INSERT, "{:.2f}".format(a[1][0]))
-#     #     outputData.insert(tk.INSERT, "\n")
-#     #     outputData.insert(tk.INSERT, 'Title: ' + pub_name[a[0]] + "\n")
-#     #     outputData.insert(tk.INSERT, 'URL: ' + pub_url[a[0]] + "\n", 'link')
-#     #     outputData.insert(tk.INSERT, 'Date: ' + pub_date[a[0]] + "\n")
-#     #     outputData.insert(tk.INSERT, 'Cov_Uni_Author: ' + pub_cu_author[a[0]] + "\n")
-#     #     outputData.insert(tk.INSERT, "\n")
-#     #     aa += 1
-
-#     if aa == 0:
-#         return "Error!!!", "No results found. Please try again."
-#     return rank_sorting
-
 count = 1
 # Function to perform publication search
-
-
 def pub_qp_data(query):
     abc = {}
     query = query.lower().split()
@@ -176,7 +117,6 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-
 @app.get("/")
 def read_root():
     return {"Search engine"}
@@ -184,11 +124,10 @@ def read_root():
 
 @app.get("/search/{query}")
 def read_item(query):
+    # Call the pub_qp_data function to process the query
     result = pub_qp_data(query)
-    return {"query": result}
+    return {"query": result}  # Return the query results
 
 
-# to start
-# uvicorn main:app --reload
 if __name__ == "__main__":
     uvicorn.run("main:app", host="127.0.0.1", port=8000, reload=True)

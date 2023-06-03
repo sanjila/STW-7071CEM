@@ -3,14 +3,16 @@ import React, { useState } from "react";
 import axios from "axios";
 
 function App() {
+  // State variables
   const [query, setQuery] = useState("");
   const [searchResults, setSearchResults] = useState([]);
   const [resultCount, setResultCount] = useState(0);
 
+  // Function to perform search request
   const searchResult = async (query) => {
     try {
+      // Send GET request to the search API endpoint
       const response = await axios.get(`http://127.0.0.1:8000/search/${query}`);
-      console.log("response", response.data.query);
       const results = response.data.query;
       setSearchResults(results);
     } catch (error) {
@@ -19,6 +21,7 @@ function App() {
     }
   };
 
+  // Function to capitalize the first letter of a string
   function capitalizeFirstLetter(string) {
     if (!string) {
       return string;
@@ -26,6 +29,7 @@ function App() {
     return string.charAt(0).toUpperCase() + string.slice(1);
   }
 
+  // Function to convert a sentence to title case
   function convertToTitleCase(sentence) {
     if (!sentence) {
       return sentence;
@@ -43,7 +47,7 @@ function App() {
     <div className="">
       <div className="p-10 w-full justify-center items-center flex flex-col">
         <img src="/logo.png" alt="Logo" />
-        {/* <h1 className='text-4xl font-bold'>Coventry Search Portal</h1> */}
+        {/* Search input */}
         <div className="mt-3 overflow-hidden rounded-lg flex md:w-1/2 w-full ">
           <input
             type="search"
@@ -64,6 +68,7 @@ function App() {
         </div>
       </div>
       <div className="p-10">
+        {/* Display result count if available */}
         {resultCount && resultCount > 0 ? (
           <p className="text-base text-gray-400">
             Search results: {resultCount} results found
@@ -72,18 +77,22 @@ function App() {
           <p className="text-base text-gray-400">Search results</p>
         )}
 
+        {/* Display search results */}
         {searchResults?.length > 0 ? (
           <ul>
             {searchResults?.map((value, index) => (
               <li key={index} className="border rounded-md p-3 my-3">
+                {/* Title */}
                 <h1 className="text-black-700 font-bold hover:underline w-fit">
                   {convertToTitleCase(value?.title)}
                 </h1>
 
+                {/* Author */}
                 <h1 className="text-green-800 text-sm">
                   Author: {capitalizeFirstLetter(value?.Cov_Uni_Author)}
                 </h1>
 
+                {/* URL */}
                 <p className="text-blue-700">
                   <a
                     href={value?.URL}
@@ -93,6 +102,8 @@ function App() {
                     {value?.URL}
                   </a>
                 </p>
+
+                {/* Date */}
                 <h1 className="text-sm">{value?.Date}</h1>
               </li>
             ))}
