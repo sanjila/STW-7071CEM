@@ -159,7 +159,7 @@ def pub_qp_data(query):
         d.append(data)
         aa += 1
     if aa == 0:
-        return "Error!!!", "No results found. Please try again."
+        return []
     print("count ", aa)
     return d
 

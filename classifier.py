@@ -23,8 +23,6 @@ stemmer = PorterStemmer()
 stop_words = stopwords.words('english')
 
 # Function to remove stopwords and perform stemming
-
-
 def remove_stopwords(data=[]):
     data_list = []
     for name in data:
@@ -37,8 +35,6 @@ def remove_stopwords(data=[]):
     return data_list
 
 # Function to remove special characters
-
-
 def remove_special_character(data=[]):
     abstract_list_wo_sc = []
     special_characters = '''!()-—[]{};:'"\, <>./?@#$%^&*_~0123456789+=’‘'''
