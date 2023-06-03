@@ -19,13 +19,13 @@ try:
 except OSError:
     pass
 
-
+# Function to write authors to a file
 def write_authors(list1, file_name):
     with open(file_name, 'w', encoding='utf-8') as f:
         for i in range(0, len(list1)):
             f.write(list1[i] + '\n')
 
-
+# Function to initialize the web crawler and scraper
 def initCrawlerScraper(seed, page_limit):
     # Initialize driver for Chrome
     webOpt = webdriver.ChromeOptions()
@@ -129,7 +129,9 @@ def initCrawlerScraper(seed, page_limit):
         print("Dumped data is:")
 
 
+# Set the seed link and page limit
 seed_link = 'https://pureportal.coventry.ac.uk/en/publications/'
 page_limit = 10
 
+# Call the function to initialize the web crawler and scraper
 initCrawlerScraper(seed_link, page_limit)

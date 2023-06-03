@@ -13,6 +13,7 @@ import pandas as pd
 import seaborn as sns
 sns.set()
 
+# Read the train and test data from CSV files
 train_data = pd.read_csv('Train.csv')
 test_data = pd.read_csv('Test.csv')
 
@@ -21,7 +22,9 @@ abstract_list_test = []
 stemmer = PorterStemmer()
 stop_words = stopwords.words('english')
 
-# Remove StopWords and Stemming
+# Function to remove stopwords and perform stemming
+
+
 def remove_stopwords(data=[]):
     data_list = []
     for name in data:
@@ -33,7 +36,9 @@ def remove_stopwords(data=[]):
         data_list.append(stem_word.lower())
     return data_list
 
-# Remove Special Characters
+# Function to remove special characters
+
+
 def remove_special_character(data=[]):
     abstract_list_wo_sc = []
     special_characters = '''!()-—[]{};:'"\, <>./?@#$%^&*_~0123456789+=’‘'''
@@ -59,7 +64,7 @@ abstract_list_train = remove_stopwords(data_train)
 data_test = np.array(test_data['ABSTRACT'])
 abstract_list_test = remove_stopwords(data_test)
 
-# Removing speaial characters from Train Data and Test Data
+# Removing special characters from Train Data and Test Data
 abstract_list_wo_sc_train = remove_special_character(abstract_list_train)
 abstract_list_wo_sc_test = remove_special_character(abstract_list_test)
 
@@ -75,18 +80,22 @@ print(" Input testing samples", len(x_test), " input testing samples")
 print(" Output training samples", y_train.shape, )
 print(" Output testing samples", y_test.shape, )
 
-# defining parameters for pipeline
+# Defining parameters for the pipeline
 parameters = Pipeline([('tfidf', TfidfVectorizer(
     stop_words=stop_words)), ('clf', ClassifierChain(MultinomialNB())),])
 
-# train data
+# Train the model
 parameters.fit(x_train, y_train)
 
-# predict
+# Make predictions
 predictions = parameters.predict(x_test)
 
-print('Accuracy Score:', accuracy_score(y_test, predictions))
-print('F1 score :', f1_score(y_test, predictions, average="micro"))
+print('Accuracy Score:', accuracy_score(y_test, predictions),
+      "("+str(accuracy_score(y_test, predictions) * 100)+" % )")
+print('F1 score :', f1_score(y_test, predictions, average="micro"),
+      "("+str(f1_score(y_test, predictions, average="micro") * 100)+" % )")
+
+print('Classification Report',)
 print(classification_report(y_test, predictions))
 
 # Confusion Matrix and HeatMap Generation
@@ -98,5 +107,6 @@ plt.xlabel('True label')
 plt.ylabel('Predicted label')
 plt.show()
 
+# Save the trained model to a pickle file
 with open('Multi_naivebayes.pkl', 'wb') as picklefile:
     pickle.dump(parameters.named_steps['clf'], picklefile)

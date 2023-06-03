@@ -10,7 +10,8 @@ function App() {
   const searchResult = async (query) => {
     try {
       const response = await axios.get(`http://127.0.0.1:8000/search/${query}`);
-      const results = response.data.results;
+      console.log("response", response.data.query);
+      const results = response.data.query;
       setSearchResults(results);
     } catch (error) {
       console.error("Error occurred while searching:", error);
@@ -70,58 +71,35 @@ function App() {
         ) : (
           <p className="text-base text-gray-400">Search results</p>
         )}
-        <ul>
-          {searchResults?.map(
-            (value, index) => console.log("value", value)
-            // <li key={index} className="border rounded-md p-3 my-3">
-            //   <h1 className="text-blue-700 hover:underline w-fit">
-            //     {convertToTitleCase(value?.Title)}
-            //   </h1>
 
-            //   <h1 className="text-green-800 text-sm">
-            //     {capitalizeFirstLetter(value?.Author)}
-            //   </h1>
-            //   <h1>{value?.Published}</h1>
-            //   <p>
-            //     <a
-            //       href={value?.Link}
-            //       target="_blank"
-            //       rel="noopener noreferrer"
-            //     >
-            //       {value?.Link}
-            //     </a>
-            //   </p>
-            // </li>
-          )}
-        </ul>
-        {/* {searchResults?.length > 0 ? (
+        {searchResults?.length > 0 ? (
           <ul>
-            {searchResults?.map(
-              (value, index) => console.log("value", value)
-              // <li key={index} className="border rounded-md p-3 my-3">
-              //   <h1 className="text-blue-700 hover:underline w-fit">
-              //     {convertToTitleCase(value?.Title)}
-              //   </h1>
+            {searchResults?.map((value, index) => (
+              <li key={index} className="border rounded-md p-3 my-3">
+                <h1 className="text-black-700 font-bold hover:underline w-fit">
+                  {convertToTitleCase(value?.title)}
+                </h1>
 
-              //   <h1 className="text-green-800 text-sm">
-              //     {capitalizeFirstLetter(value?.Author)}
-              //   </h1>
-              //   <h1>{value?.Published}</h1>
-              //   <p>
-              //     <a
-              //       href={value?.Link}
-              //       target="_blank"
-              //       rel="noopener noreferrer"
-              //     >
-              //       {value?.Link}
-              //     </a>
-              //   </p>
-              // </li>
-            )}
+                <h1 className="text-green-800 text-sm">
+                  Author: {capitalizeFirstLetter(value?.Cov_Uni_Author)}
+                </h1>
+
+                <p className="text-blue-700">
+                  <a
+                    href={value?.URL}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    {value?.URL}
+                  </a>
+                </p>
+                <h1 className="text-sm">{value?.Date}</h1>
+              </li>
+            ))}
           </ul>
         ) : (
           <p className="mt-3 text-lg">No Results found</p>
-        )} */}
+        )}
       </div>
     </div>
   );
